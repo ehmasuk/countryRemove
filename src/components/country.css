@@ -1,0 +1,15 @@
+.wraper img{
+    height: 100px;
+}
+.wraper{
+    background-color: #f7f1e3;
+    padding: 20px;
+    text-align: center;
+}
+.info{
+    margin-top: 20px;
+}
+
+.col-md-4{
+    margin-top: 20px;
+}

@@ -1,0 +1,9 @@
+.header{
+    padding: 20px 0;
+}
+.header input{
+    outline: none;
+    padding: 5px 10px;
+    width: 500px;
+    max-width: 90%;
+}

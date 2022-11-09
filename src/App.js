@@ -3,19 +3,31 @@ import "./App.css";
 import Country from "./components/country";
 import { v4 as uuidv4 } from "uuid";
 import Header from "./components/header";
+import CountrySkeleton from "./components/countrySkeleton";
 
 function App() {
     const [allData, setAllData] = useState([]);
     const [oldCountries, setOldCountries] = useState([]);
+    const [isLoading, setIsloading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const url = "https://restcountries.com/v3.1/all";
 
         fetch(url)
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.ok) return res.json();
+                throw Error("Could not fetch data");
+            })
             .then((data) => {
                 setAllData(data);
                 setOldCountries(data);
+            })
+            .catch((err) => {
+                setError(err.message);
+            })
+            .finally(() => {
+                setIsloading(false);
             });
     }, []);
 
@@ -40,10 +52,16 @@ function App() {
 
     return (
         <div className='App'>
-            <h1 className='text-center'>Country App</h1>
             <Header handleSearch={handleSearch} />
             <div className='container'>
                 <div className='row'>
+                    {error && <h3>{error}</h3>}
+                    {isLoading
+                        ? Array.from(new Array(8)).map((e, i) => {
+                            return <CountrySkeleton key={i} />;
+                        })
+                        : ""}
+
                     {allData.map((e) => (
                         <Country key={uuidv4()} singleObj={e} handleRemove={handleRemove} />
                     ))}
